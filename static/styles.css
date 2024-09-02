@@ -81,7 +81,25 @@ h1 {
 .exercise-table div {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
+}
+
+.sets,
+.reps {
+    align-items: center;
+}
+
+
+.exercise-table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.no-exercises {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .add-btn-container {

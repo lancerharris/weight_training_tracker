@@ -6,36 +6,42 @@
     <h1>Weekly Workout Schedule</h1>
 </div>
 <div class="schedule-container">
-    <!-- Loop through each day of the week -->
-    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+    {% for day, exercises in schedule.items() %}
     <div class="day-of-week">
     <h2>{{ day }}</h2>
         <div class="exercise-card">
-            <!-- Placeholder: Replace with dynamic content from database -->
-            <div class="exercise-table">
-                <div>
-                    <h3>Exercise</h3>
-                    <p>Bench Press</p>
-                    <p>Squats</p>
+            {% if exercises %}
+                <div class="exercise-table">
+                    <div>
+                        <h3>Exercise</h3>
+                        {% for exercise in exercises %}
+                            <p>{{ exercise.exercise }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="sets">
+                        <h3>Sets</h3>
+                        {% for exercise in exercises %}
+                            <p>{{ exercise.sets }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="reps">
+                        <h3>Reps</h3>
+                        {% for exercise in exercises %}
+                            <p>{{ exercise.reps }}</p>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <h3></h3>
+                        {% for exercise in exercises %}
+                            <button class="del-btn">Delete</button>
+                        {% endfor %}
+                    </div>
+                    
                 </div>
-                <div>
-                    <h3>Sets</h3>
-                    <p>3</p>
-                    <p>4</p>
-                </div>
-                <div>
-                    <h3>Reps</h3>
-                    <p>10</p>
-                    <p>8</p>
-                </div>
-                <div>
-                    <h3></h3>
-                    <button class="del-btn">Delete</button>
-                    <button class="del-btn">Delete</button>
-                </div>
-            </div>
+                {% else %}
+                    <p class="no-exercises">No exercises scheduled</p>
+            {% endif %}
             </br>
-            <!-- Button to add new exercise -->
             <div class="add-btn-container">
                 <button class="add-btn">Add Exercise</button>
             </div>
