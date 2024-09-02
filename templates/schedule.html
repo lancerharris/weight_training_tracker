@@ -1,0 +1,46 @@
+<!-- templates/schedule.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="header-container">
+    <h1>Weekly Workout Schedule</h1>
+</div>
+<div class="schedule-container">
+    <!-- Loop through each day of the week -->
+    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+    <div class="day-of-week">
+    <h2>{{ day }}</h2>
+        <div class="exercise-card">
+            <!-- Placeholder: Replace with dynamic content from database -->
+            <div class="exercise-table">
+                <div>
+                    <h3>Exercise</h3>
+                    <p>Bench Press</p>
+                    <p>Squats</p>
+                </div>
+                <div>
+                    <h3>Sets</h3>
+                    <p>3</p>
+                    <p>4</p>
+                </div>
+                <div>
+                    <h3>Reps</h3>
+                    <p>10</p>
+                    <p>8</p>
+                </div>
+                <div>
+                    <h3></h3>
+                    <button class="del-btn">Delete</button>
+                    <button class="del-btn">Delete</button>
+                </div>
+            </div>
+            </br>
+            <!-- Button to add new exercise -->
+            <div class="add-btn-container">
+                <button class="add-btn">Add Exercise</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

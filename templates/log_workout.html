@@ -1,0 +1,101 @@
+<!-- templates/log_workout.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Log Workout</h1>
+<form method="POST" action="">
+    <label for="workout-date">Workout Date:</label>
+    <input type="date" id="workout-date" name="workout_date" required>
+
+    <h2>Exercises</h2>
+    <div class="exercise-entry">
+        <label for="exercise-name">Exercise Name:</label>
+        <input type="text" id="exercise-name" name="exercise_name" required>
+
+        <label for="weight-lifted">Weight Lifted:</label>
+        <input type="number" id="weight-lifted" name="weight_lifted">
+
+        <label for="rep-goal">Rep Goal:</label>
+        <input type="number" id="rep-goal" name="rep_goal">
+
+        <label for="reps-completed">Reps Completed:</label>
+        <input type="number" id="reps-completed" name="reps_completed">
+
+        <label for="set-goal">Set Goal:</label>
+        <input type="number" id="set-goal" name="set_goal">
+
+        <label for="sets-completed">Sets Completed:</label>
+        <input type="number" id="sets-completed" name="sets_completed">
+
+        <label for="exercise-notes">Notes:</label>
+        <textarea id="exercise-notes" name="exercise_notes"></textarea>
+
+        <label for="difficulty-rating">Difficulty Rating:</label>
+        <select id="difficulty-rating" name="difficulty_rating">
+            <option value="easy">Easy</option>
+            <option value="moderate">Moderate</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
+    <h2>Muscle Groups</h2>
+    <div class="muscle-group-entry">
+        <label for="muscle-group">Muscle Group:</label>
+        <input type="text" id="muscle-group" name="muscle_group">
+
+        <label for="sets-completed">Sets Completed:</label>
+        <input type="number" id="sets-completed" name="muscle_sets_completed">
+
+        <label for="pup-level">PUP Level:</label>
+        <select id="pup-level" name="pup_level">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+
+        <label for="soreness">Soreness:</label>
+        <select id="soreness" name="soreness">
+            <option value="none">None</option>
+            <option value="mild">Mild</option>
+            <option value="severe">Severe</option>
+        </select>
+
+        <label for="recovery">Recovery:</label>
+        <select id="recovery" name="recovery">
+            <option value="good">Good</option>
+            <option value="average">Average</option>
+            <option value="poor">Poor</option>
+        </select>
+
+        <label for="muscle-notes">Muscle Group Notes:</label>
+        <textarea id="muscle-notes" name="muscle_notes"></textarea>
+    </div>
+
+    <h2>Overall Workout</h2>
+    <label for="workout-duration">Duration (minutes):</label>
+    <input type="number" id="workout-duration" name="workout_duration">
+
+    <label for="workout-type">Workout Type:</label>
+    <input type="text" id="workout-type" name="workout_type">
+
+    <label for="performance-rating">Performance Rating:</label>
+    <select id="performance-rating" name="performance_rating">
+        <option value="excellent">Excellent</option>
+        <option value="good">Good</option>
+        <option value="average">Average</option>
+        <option value="poor">Poor</option>
+    </select>
+
+    <label for="fatigue-rating">Fatigue Induced Rating:</label>
+    <select id="fatigue-rating" name="fatigue_rating">
+        <option value="low">Low</option>
+        <option value="moderate">Moderate</option>
+        <option value="high">High</option>
+    </select>
+
+    <label for="overall-notes">Overall Notes:</label>
+    <textarea id="overall-notes" name="overall_notes"></textarea>
+
+    <button type="submit">Save Workout</button>
+</form>
+{% endblock %}

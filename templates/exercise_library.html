@@ -1,0 +1,26 @@
+<!-- templates/exercise_library.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Exercise Library</h1>
+
+<h2>Existing Exercises</h2>
+<ul>
+    <!-- Placeholder for exercises, will be populated dynamically -->
+    <li>Squat - Primary: Legs, Secondary: Core</li>
+</ul>
+
+<h2>Add New Exercise</h2>
+<form method="POST" action="">
+    <label for="exercise-name">Exercise Name:</label>
+    <input type="text" id="exercise-name" name="exercise_name" required>
+
+    <label for="primary-muscle">Primary Muscle Group:</label>
+    <input type="text" id="primary-muscle" name="primary_muscle" required>
+
+    <label for="secondary-muscle">Secondary Muscle Groups:</label>
+    <input type="text" id="secondary-muscle" name="secondary_muscle">
+
+    <button type="submit">Add Exercise</button>
+</form>
+{% endblock %}

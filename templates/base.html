@@ -1,0 +1,24 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Weight Training Tracker</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('schedule') }}">Weekly Schedule</a></li>
+            <li><a href="{{ url_for('log_workout') }}">Log Workout</a></li>
+            <li><a href="{{ url_for('exercise_library') }}">Exercise Library</a></li>
+            <li><a href="{{ url_for('logs') }}">Logs</a></li>
+            <li><a href="{{ url_for('progress') }}">Progress</a></li>
+        </ul>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
