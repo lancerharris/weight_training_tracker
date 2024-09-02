@@ -1,0 +1,34 @@
+id,name,exercise_type,primary_muscle_group_id
+1,squat,legs,1
+2,romanaian deadlift,legs,2
+3,lunges,legs,1
+4,calf raises,legs,3
+5,plank,abdominals,4
+6,bench press,push,5
+7,overhead press,push,6
+8,dumbbell flyes,pull,5
+9,lateral raises,push,7
+10,skull crushers,push,8
+11,tricep pushdown,push,8
+12,pendlay row,pull,9
+13,chin ups,pull,9
+14,single arm dumbbell row,pull,9
+15,shrugs,pull,10
+16,EZ bar curls,pull,11
+17,preacher curls,pull,11
+18,front squat,legs,12
+19,bulgarian split squat,legs,1
+20,leg curls,legs,13
+21,cable crunches,abdominals,4
+22,incline bench press,push,5
+23,Arnold press,push,6
+24,cable crossovers,pull,5
+25,rear delt flyes,push,14
+26,dips,push,8
+27,overhead tricep extension,push,8
+28,deadlift,pull,2
+29,pull ups,pull,9
+30,bent row,pull,9
+31,face pull,pull,14
+32,hammer curls,pull,11
+33,concentration curls,pull,11
