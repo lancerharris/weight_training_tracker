@@ -113,3 +113,20 @@ def load_data_from_folder(folder_path):
 
     conn.commit()
     conn.close()
+
+def get_exercises_and_muscle_groups():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT t1.id, t1.name, t2.muscle_group
+        FROM exercises t1
+        INNER JOIN muscle_groups t2
+            ON t1.primary_muscle_group_id = t2.id
+        ORDER BY t1.name
+    ''')
+    exercises = [{'id': row[0], 'name': row[1], 'primary_muscle_group': row[1]} for row in cursor.fetchall()]
+
+    conn.close()
+
+    return exercises

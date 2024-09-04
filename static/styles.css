@@ -122,3 +122,13 @@ h1 {
 .add-btn:hover {
     background-color: #0056b3;
 }
+
+#modal-dialog {
+    max-width: 750px;
+}
+
+.modal-body li {
+    display: flex;
+    justify-content: space-between;
+}
+

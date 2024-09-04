@@ -6,34 +6,38 @@
     <h1>Weekly Workout Schedule</h1>
 </div>
 <div class="schedule-container">
-    {% for day, exercises in schedule.items() %}
+    {% for day, scheduled_exercises in schedule.items() %}
     <div class="day-of-week">
     <h2>{{ day }}</h2>
         <div class="exercise-card">
-            {% if exercises %}
+            {% if scheduled_exercises %}
                 <div class="exercise-table">
                     <div>
                         <h3>Exercise</h3>
-                        {% for exercise in exercises %}
+                        {% for exercise in scheduled_exercises %}
                             <p>{{ exercise.exercise }}</p>
                         {% endfor %}
                     </div>
                     <div class="sets">
                         <h3>Sets</h3>
-                        {% for exercise in exercises %}
+                        {% for exercise in scheduled_exercises %}
                             <p>{{ exercise.sets }}</p>
                         {% endfor %}
                     </div>
                     <div class="reps">
                         <h3>Reps</h3>
-                        {% for exercise in exercises %}
+                        {% for exercise in scheduled_exercises %}
                             <p>{{ exercise.reps }}</p>
                         {% endfor %}
                     </div>
                     <div>
                         <h3></h3>
-                        {% for exercise in exercises %}
-                            <button class="del-btn">Delete</button>
+                        {% for exercise in scheduled_exercises %}
+                            <form method="POST" action="{{ url_for('delete_scheduled_exercise') }}" style="display: inline;">
+                                <input type="hidden" name="exercise_id" value="{{exercise.exercise_id}}">
+                                <input type="hidden" name="day_of_week" value="{{day}}">
+                                <button type="submit">Delete</button>
+                            </form>
                         {% endfor %}
                     </div>
                     
@@ -43,7 +47,40 @@
             {% endif %}
             </br>
             <div class="add-btn-container">
-                <button class="add-btn">Add Exercise</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exerciseModal">Add Exercise From Library</button>
+            </div>
+            <div class="modal fade" id="exerciseModal" tabindex="-1" aria-labelledby="exerciseModalLabel" aria-hidden="true">
+                <div id="modal-dialog" class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exerciseModalLabel">Select an Exercise</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="addExerciseForm" method="POST" action="{{ url_for('add_exercises_to_schedule') }}">
+                            <input type="hidden" name="day_of_week" value="{{day}}">
+                            <div class="modal-body" style="max-height: 750px; overflow-y: auto;">
+                                <ul class="list-group">
+                                    {% for exercise in exercises %}
+                                    <li class="list-group-item">
+                                        <input type="checkbox" name="selected_exercises" value="{{ exercise.id }}">
+                                        {{ exercise.name }} - {{ exercise.primary_muscle_group }}
+                                        <div>
+                                            <input type="number" name="sets" placeholder="Sets" min="1" style="width: 75px;">
+                                            <input type="number" name="reps" placeholder="Reps" min="1" style="width: 75px;">
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
-from database import create_tables, load_data_from_folder
+from database import create_tables, get_exercises_and_muscle_groups, load_data_from_folder
 import os
 
-from weekly_schedule import get_planned_workouts
+from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
 
 app = Flask(__name__)
 
@@ -12,8 +12,23 @@ def home():
 
 @app.route('/schedule')
 def schedule():
+    exercises = get_exercises_and_muscle_groups()
     schedule_data = get_planned_workouts()
-    return render_template('schedule.html', schedule=schedule_data)
+    return render_template('schedule.html', schedule=schedule_data, exercises=exercises)
+
+@app.route('/add_exercises_to_schedule', methods=['POST'])
+def add_exercises_to_schedule():
+    selected_exercises = request.form.getlist('selected_exercises')
+    if selected_exercises:
+        for exercise_id in selected_exercises:
+            add_exercise_from_library(exercise_id, request.form.get('day_of_week'), request.form.get('sets'), request.form.get('reps'))
+    return redirect(url_for('schedule'))
+
+@app.route('/delete_scheduled_exercise', methods=['POST'])
+def delete_scheduled_exercise():
+    print(request.form)
+    delete_exercise_from_schedule(request.form.get('exercise_id'), request.form.get('day_of_week'))
+    return redirect(url_for('schedule'))
 
 @app.route('/log-workout')
 def log_workout():
