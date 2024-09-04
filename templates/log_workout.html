@@ -3,11 +3,96 @@
 
 {% block content %}
 <h1>Log Workout</h1>
+<br>
 <form method="POST" action="">
     <label for="workout-date">Workout Date:</label>
-    <input type="date" id="workout-date" name="workout_date" required>
-
+    <input type="date" id="workout-date" name="workout_date" value={{todays_date}} required>
+    <br>
+    <br>
     <h2>Exercises</h2>
+    <br>
+    <div class="log-container">
+        <div class="exercise-names">
+            <h4>Exercise</h4>
+            <h5>Placeholder</h5>
+            {% for exercise in weekday_exercises %}
+                <p>{{exercise.exercise}}</p>
+            {% endfor %}
+        </div>
+        <div class="exercise-weights">
+            <h4>Weight</h4>
+
+        </div>
+        <div class="set-info">
+            <h4>Sets</h4>
+            <h5>Actual / Goal</h5>
+            {% for exercise in weekday_exercises %}
+                <div class="exercise-set-info">
+                    <input type="number" id="sets-completed" name="sets_completed" min="1" style="width: 75px;">
+                    <p>{{exercise.sets}}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="rep-info">
+            <h4>Reps</h4>
+            <h5>Actual / Goal</h5>
+            {% for exercise in weekday_exercises %}
+                <div class="exercise-rep-info">
+                    <input type="number" id="reps-completed" name="reps_completed" min="1" style="width: 75px;">
+                    <p>{{exercise.reps}}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="exercise-notes">
+            <h4>Notes</h4>
+        </div>
+        <div class="difficulty-rating">
+            <h4>Difficulty</h4>
+        </div>
+    </div>
+    <br>
+    <h2>Muscle Groups</h2>
+    <br>
+    <div class="log-container">
+        <div class="muscle-group-names">
+            <h4>Muscle Group</h4>
+        </div>
+        <div class="pump-levels">
+            <h4>Pump Level</h4>
+        </div>
+        <div class="soreness-levels">
+            <h4>Pre Workout Soreness</h4>
+        </div>
+        <div class="recovery-levels">
+            <h4>Recovery Pre Workout</h4>
+        </div>
+        <div class="muscle-group-notes">
+            <h4>Notes</h4>
+        </div>
+    </div>
+
+    <br>
+    <h2>Overall Workout</h2>
+    <br>
+    <div class="log-container">
+        <div class="workout-duration">
+            <h4>Duration</h4>
+        </div>
+        <div class="workout-type">
+            <h4>Workout Type</h4>
+        </div>
+        <div class="performance-rating">
+            <h4>Performance Rating</h4>
+        </div>
+        <div class="fatigue-rating">
+            <h4>Fatigue Induced</h4>
+        </div>
+        <div class="overall-notes">
+            <h4>Notes</h4>
+        </div>
+    </div>
+    <br>
+    <button type="submit">Save Workout</button>
     <div class="exercise-entry">
         <label for="exercise-name">Exercise Name:</label>
         <input type="text" id="exercise-name" name="exercise_name" required>

@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from database import create_tables, get_exercises_and_muscle_groups, load_data_from_folder
 import os
+from datetime import date
 
-from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
+from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts, get_weekday_exercises
 
 app = Flask(__name__)
 
@@ -32,7 +33,10 @@ def delete_scheduled_exercise():
 
 @app.route('/log-workout')
 def log_workout():
-    return render_template('log_workout.html')
+    todays_date = date.today().strftime("%Y-%m-%d")
+    weekday = date.today().strftime("%A")
+    starter_exercises = get_weekday_exercises(weekday)
+    return render_template('log_workout.html', todays_date=todays_date, weekday_exercises=starter_exercises)
 
 @app.route('/exercise-library')
 def exercise_library():

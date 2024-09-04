@@ -87,3 +87,30 @@ def delete_exercise_from_schedule(exercise_id, day_of_week):
 
     conn.commit()
     conn.close()
+
+def get_weekday_exercises(weekday):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT 
+            t1.exercise_id, t2.name, t1.target_sets, t1.target_reps_or_duration
+        FROM weekly_schedule t1
+        INNER JOIN exercises t2
+            ON t1.exercise_id = t2.id
+        WHERE t1.weekday_int = ?
+    ''', (weekday_ints[weekday],))
+
+    exercises = []
+
+    for row in cursor.fetchall():
+        exercise_id, exercise_name, target_sets, target_reps_or_duration = row
+        exercises.append({
+            'exercise': exercise_name,
+            'exercise_id': exercise_id,
+            'sets': target_sets,
+            'reps': target_reps_or_duration
+        })
+
+    conn.close()
+    return exercises
