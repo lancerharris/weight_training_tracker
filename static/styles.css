@@ -132,16 +132,7 @@ h1 {
     justify-content: space-between;
 }
 
-.log-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin: 20px 20px; 
-}
-
-.exercise-set-info,
+/* .exercise-set-info,
 .exercise-rep-info {
     display: flex;
     justify-content: space-between;
@@ -152,4 +143,73 @@ h1 {
 .rep-info h4,
 .rep-info h5 {
     text-align: center;
+} */
+/* 
+.log-exercises {
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise-headers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.exercise-info {
+    display: flex;
+    justify-content: space-between;
+} */
+
+.log-container-exercises,
+.log-container-muscle,
+.log-container-overall {
+    display: grid;
+    justify-items: start;
+    gap: 10px; /* Optional: Adds spacing between the grid items */
+    padding: 10px;
+    align-items: center; /* Aligns items vertically in the center */
+}
+
+.log-container-exercises {
+    grid-template-columns: repeat(7, 1fr); /* Creates 6 equal columns */
+}
+
+.log-container-muscle,
+.log-container-overall {
+    grid-template-columns: repeat(5, 1fr); /* Creates 6 equal columns */
+}
+
+.log-container h4 {
+    text-align: center;
+    margin: 0;
+}
+
+.exercise-info {
+    display: contents; /* Allows direct placement of child elements into the grid */
+}
+
+.exercise-info p,
+.exercise-info input,
+.exercise-set-info,
+.exercise-rep-info {
+    text-align: center;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.exercise-set-info,
+.exercise-rep-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px; /* Adds spacing between the input and text */
+}
+
+input {
+    width: 75px; /* Consistent width for input fields */
+}
+
+#workout-date {
+    width: 120px; /* Consistent width for input fields */
 }
