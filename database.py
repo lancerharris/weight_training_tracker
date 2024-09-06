@@ -81,6 +81,35 @@ def create_tables():
         note TEXT NOT NULL,
         note_type TEXT NOT NULL CHECK(note_type IN ('workout', 'workout exercises', 'muscle groups'))
     );
+                         
+    CREATE TABLE IF NOT EXISTS current_workout_date (
+        date TEXT NOT NULL
+    );
+                         
+    CREATE TABLE IF NOT EXISTS current_workout_exercises (
+        exercise_name TEXT NOT NULL,
+        weight REAL,
+        sets INTEGER,
+        reps INTEGER,
+        difficulty INTEGER,
+        note TEXT
+    );
+                         
+    CREATE TABLE IF NOT EXISTS current_workout_muscle_groups (
+        muscle_group TEXT NOT NULL,
+        pump INTEGER,
+        soreness_before_workout INTEGER,
+        recovery_before_workout INTEGER,
+        note TEXT
+    );
+                         
+    CREATE TABLE IF NOT EXISTS current_workout_overall (
+        duration_in_minutes REAL,
+        workout_type TEXT,
+        performance INTEGER,
+        fatigue_induced INTEGER,
+        note TEXT
+    );
     ''')
 
     # Commit and close the connection

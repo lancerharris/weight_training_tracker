@@ -6,181 +6,114 @@
 <br>
 <form method="POST" action="">
     <label for="workout-date">Workout Date:</label>
-    <input type="date" id="workout-date" name="workout_date" value={{todays_date}} required>
+    <input type="date" id="workout-date" name="workout_date" value={{workout_date}} required>
     <br>
     <br>
     <h2>Exercises</h2>
     <br>
-    <div class="log-container">
-        <div class="exercise-names">
-            <h4>Exercise</h4>
-            <h5>Placeholder</h5>
-            {% for exercise in weekday_exercises %}
-                <p>{{exercise.exercise}}</p>
-            {% endfor %}
+    <div class="log-container-exercises">
+        <h4>Exercise</h4>
+        <h4>Weight</h4>
+        <h4>Sets</h4>
+        <h4>Reps</h4>
+        <h4>Difficulty</h4>
+        <h4>Notes</h4>
+        <h4></h4>
+        {% for exercise in exercises %}
+        <div class="exercise-info">
+            <p>{{exercise[0]}}</p>
+            <input type="number" name="weight_used" min="1" value={{exercise[1]}} style="width: 75px;">
+            <div class="exercise-set-info">
+                <input type="number" name="sets_completed" min="1" value={{exercise[2]}} style="width: 75px;">
+                {% if exercise[3] != None %}<p> / {{exercise[3]}}</p>{% endif %}
+            </div>
+            <div class="exercise-rep-info">
+                <input type="number" name="reps_completed" min="1" value={{exercise[4]}} style="width: 75px;">
+                {% if exercise[5] != None %}<p> / {{exercise[5]}}</p>{% endif %}
+            </div>
+            <!-- <p>{{exercise[6]}}</p> -->
+            <select id="difficulty" name="difficulty">
+                <option value="very-easy" {% if exercise[6] == 1 %}selected{% endif %}>Very Easy</option>
+                <option value="easy" {% if exercise[6] == 2 %}selected{% endif %}>Easy</option>
+                <option value="medium" {% if exercise[6] == 3 %}selected{% endif %}>Medium</option>
+                <option value="hard" {% if exercise[6] == 4 %}selected{% endif %}>Hard</option>
+                <option value="very-hard" {% if exercise[6] == 5 %}selected{% endif %}>Very Hard</option>
+            </select>
+            <textarea name="exercise_notes" style="width: 200px;">{{exercise[7]}}</textarea>
+            <form method="POST" action="{{ url_for('delete_log_exercise') }}" style="display: inline;">
+                <input type="hidden" name="exercise_id" value="{{exercise.exercise_id}}">
+                <button type="submit">Delete</button>
+            </form>
         </div>
-        <div class="exercise-weights">
-            <h4>Weight</h4>
-
-        </div>
-        <div class="set-info">
-            <h4>Sets</h4>
-            <h5>Actual / Goal</h5>
-            {% for exercise in weekday_exercises %}
-                <div class="exercise-set-info">
-                    <input type="number" id="sets-completed" name="sets_completed" min="1" style="width: 75px;">
-                    <p>{{exercise.sets}}</p>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="rep-info">
-            <h4>Reps</h4>
-            <h5>Actual / Goal</h5>
-            {% for exercise in weekday_exercises %}
-                <div class="exercise-rep-info">
-                    <input type="number" id="reps-completed" name="reps_completed" min="1" style="width: 75px;">
-                    <p>{{exercise.reps}}</p>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="exercise-notes">
-            <h4>Notes</h4>
-        </div>
-        <div class="difficulty-rating">
-            <h4>Difficulty</h4>
-        </div>
+        {% endfor %}
     </div>
     <br>
     <h2>Muscle Groups</h2>
-    <br>
-    <div class="log-container">
-        <div class="muscle-group-names">
-            <h4>Muscle Group</h4>
-        </div>
-        <div class="pump-levels">
-            <h4>Pump Level</h4>
-        </div>
-        <div class="soreness-levels">
-            <h4>Pre Workout Soreness</h4>
-        </div>
-        <div class="recovery-levels">
-            <h4>Recovery Pre Workout</h4>
-        </div>
-        <div class="muscle-group-notes">
-            <h4>Notes</h4>
-        </div>
+    <div class="log-container-muscle">
+        <h4>Muscle Group</h4>
+        <h4>Pump Level</h4>
+        <h4>Pre-Workout Soreness</h4>
+        <h4>Pre-Workout Recovery</h4>
+        <h4>Notes</h4>
+        {% for muscle_group in muscle_groups %}
+        <p>{{muscle_group[0]}}</p>
+        <select id="pump-level" name="pump_level">
+            <option value="none" {% if muscle_group[1] == 1 %}selected{% endif %}>None</option>
+            <option value="low" {% if muscle_group[1] == 2 %}selected{% endif %}>Low</option>
+            <option value="ok" {% if muscle_group[1] == 3 %}selected{% endif %}>Ok</option>
+            <option value="good" {% if muscle_group[1] == 4 %}selected{% endif %}>Good</option>
+            <option value="great" {% if muscle_group[1] == 5 %}selected{% endif %}>Great</option>
+        </select>
+        <select id="pre-workout-soreness" name="pre_workout_soreness">
+            <option value="none" {% if muscle_group[2] == 1 %}selected{% endif %}>None</option>
+            <option value="mild" {% if muscle_group[2] == 2 %}selected{% endif %}>Mild</option>
+            <option value="moderate" {% if muscle_group[2] == 3 %}selected{% endif %}>Moderate</option>
+            <option value="strong" {% if muscle_group[2] == 4 %}selected{% endif %}>Strong</option>
+            <option value="severe" {% if muscle_group[2] == 5 %}selected{% endif %}>Severe</option>
+        </select>
+        <select id="pre-workout-recovery" name="pre_workout_recovery">
+            <option value="very-poor" {% if muscle_group[3] == 1 %}selected{% endif %}>Very Poor</option>
+            <option value="poor" {% if muscle_group[3] == 2 %}selected{% endif %}>Poor</option>
+            <option value="ok" {% if muscle_group[3] == 3 %}selected{% endif %}>Ok</option>
+            <option value="good" {% if muscle_group[3] == 4 %}selected{% endif %}>Good</option>
+            <option value="great" {% if muscle_group[3] == 5 %}selected{% endif %}>Perfect</option>
+            <option value="overly-recovered" {% if muscle_group[3] == 6 %}selected{% endif %}>Overly Recovered</option>
+        </select>
+        <textarea name="muscle_notes" style="width: 200px;">{{muscle_group[4]}}</textarea>
+        {% endfor %}
     </div>
-
     <br>
     <h2>Overall Workout</h2>
-    <br>
-    <div class="log-container">
-        <div class="workout-duration">
-            <h4>Duration</h4>
-        </div>
-        <div class="workout-type">
-            <h4>Workout Type</h4>
-        </div>
-        <div class="performance-rating">
-            <h4>Performance Rating</h4>
-        </div>
-        <div class="fatigue-rating">
-            <h4>Fatigue Induced</h4>
-        </div>
-        <div class="overall-notes">
-            <h4>Notes</h4>
-        </div>
+    <div class="log-container-overall">
+        <h4>Duration in Minutes</h4>
+        <h4>Workout Type</h4>
+        <h4>Performance Rating</h4>
+        <h4>Fatigue Induced</h4>
+        <h4>Notes</h4>
+        {% for workout in overall %}
+        <input type="number" name="workout_duration" min="1" value="{{workout[0]}}" style="width: 75px;">
+        <select id="workout-type" name="workout_type">
+            <option value="push" {% if workout[1] == "push" %}selected{% endif %}>Push</option>
+            <option value="pull" {% if workout[1] == "pull" %}selected{% endif %}>Pull</option>
+            <option value="legs" {% if workout[1] == "legs" %}selected{% endif %}>Legs</option>
+        </select>
+        <select id="performance-rating" name="performance_rating">
+            <option value="very-poor" {% if workout[2] == 1 %}selected{% endif %}>Very Poor</option>
+            <option value="poor" {% if workout[2] == 2 %}selected{% endif %}>Poor</option>
+            <option value="ok" {% if workout[2] == 3 %}selected{% endif %}>Ok</option>
+            <option value="good" {% if workout[2] == 4 %}selected{% endif %}>Good</option>
+            <option value="great" {% if workout[2] == 5 %}selected{% endif %}>Great</option>
+            <option value="phenominal" {% if workout[2] == 6 %}selected{% endif %}>Phenomenal</option>
+        </select>
+        <select id="fatigue-induced" name="fatigue_induced">
+            <option value="none" {% if workout[3] == 1 %}selected{% endif %}>None</option>
+            <option value="mild" {% if workout[3] == 2 %}selected{% endif %}>Mild</option>
+            <option value="moderate" {% if workout[3] == 3 %}selected{% endif %}>Moderate</option>
+            <option value="strong" {% if workout[3] == 4 %}selected{% endif %}>Strong</option>
+            <option value="severe" {% if workout[3] == 5 %}selected{% endif %}>Severe</option>
+            <textarea name="workout_notes" style="width: 200px;">{{workout[4]}}</textarea>
+        </select>
+        {% endfor %}
     </div>
     <br>
-    <button type="submit">Save Workout</button>
-    <div class="exercise-entry">
-        <label for="exercise-name">Exercise Name:</label>
-        <input type="text" id="exercise-name" name="exercise_name" required>
-
-        <label for="weight-lifted">Weight Lifted:</label>
-        <input type="number" id="weight-lifted" name="weight_lifted">
-
-        <label for="rep-goal">Rep Goal:</label>
-        <input type="number" id="rep-goal" name="rep_goal">
-
-        <label for="reps-completed">Reps Completed:</label>
-        <input type="number" id="reps-completed" name="reps_completed">
-
-        <label for="set-goal">Set Goal:</label>
-        <input type="number" id="set-goal" name="set_goal">
-
-        <label for="sets-completed">Sets Completed:</label>
-        <input type="number" id="sets-completed" name="sets_completed">
-
-        <label for="exercise-notes">Notes:</label>
-        <textarea id="exercise-notes" name="exercise_notes"></textarea>
-
-        <label for="difficulty-rating">Difficulty Rating:</label>
-        <select id="difficulty-rating" name="difficulty_rating">
-            <option value="easy">Easy</option>
-            <option value="moderate">Moderate</option>
-            <option value="hard">Hard</option>
-        </select>
-    </div>
-
-    <h2>Muscle Groups</h2>
-    <div class="muscle-group-entry">
-        <label for="muscle-group">Muscle Group:</label>
-        <input type="text" id="muscle-group" name="muscle_group">
-
-        <label for="sets-completed">Sets Completed:</label>
-        <input type="number" id="sets-completed" name="muscle_sets_completed">
-
-        <label for="pup-level">PUP Level:</label>
-        <select id="pup-level" name="pup_level">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-        </select>
-
-        <label for="soreness">Soreness:</label>
-        <select id="soreness" name="soreness">
-            <option value="none">None</option>
-            <option value="mild">Mild</option>
-            <option value="severe">Severe</option>
-        </select>
-
-        <label for="recovery">Recovery:</label>
-        <select id="recovery" name="recovery">
-            <option value="good">Good</option>
-            <option value="average">Average</option>
-            <option value="poor">Poor</option>
-        </select>
-
-        <label for="muscle-notes">Muscle Group Notes:</label>
-        <textarea id="muscle-notes" name="muscle_notes"></textarea>
-    </div>
-
-    <h2>Overall Workout</h2>
-    <label for="workout-duration">Duration (minutes):</label>
-    <input type="number" id="workout-duration" name="workout_duration">
-
-    <label for="workout-type">Workout Type:</label>
-    <input type="text" id="workout-type" name="workout_type">
-
-    <label for="performance-rating">Performance Rating:</label>
-    <select id="performance-rating" name="performance_rating">
-        <option value="excellent">Excellent</option>
-        <option value="good">Good</option>
-        <option value="average">Average</option>
-        <option value="poor">Poor</option>
-    </select>
-
-    <label for="fatigue-rating">Fatigue Induced Rating:</label>
-    <select id="fatigue-rating" name="fatigue_rating">
-        <option value="low">Low</option>
-        <option value="moderate">Moderate</option>
-        <option value="high">High</option>
-    </select>
-
-    <label for="overall-notes">Overall Notes:</label>
-    <textarea id="overall-notes" name="overall_notes"></textarea>
-
-    <button type="submit">Save Workout</button>
-</form>
 {% endblock %}
