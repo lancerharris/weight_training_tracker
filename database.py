@@ -104,6 +104,7 @@ def create_tables():
     );
                          
     CREATE TABLE IF NOT EXISTS current_workout_overall (
+        workout_id INTEGER PRIMARY KEY AUTOINCREMENT,
         duration_in_minutes REAL,
         workout_type TEXT,
         performance INTEGER,

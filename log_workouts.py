@@ -68,17 +68,19 @@ def check_current_workout_exists():
     cursor = conn.cursor()
 
     cursor.execute('SELECT COUNT(*) FROM current_workout_date')
+    result = cursor.fetchone()
+    count = result[0] if result else 0
 
-    count = cursor.fetchone()[0]
     conn.close()
     return count > 0
 
 def get_curr_workout_data():
-    conn = connect_db
+    conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM current_workout_date')
-    workout_date = cursor.fetchone()[0]
+    result = cursor.fetchone()
+    workout_date = result[0] if result else None
 
     exercises = []
     cursor.execute('SELECT * FROM current_workout_exercises')
@@ -94,9 +96,9 @@ def get_curr_workout_data():
     
     overall_workout_data = []
     cursor.execute('SELECT * FROM current_workout_overall')
-    for row in cursor.fetchone():
-        duration, workout_type, performance, fatigue_induced, workout_note = row
-        overall_workout_data.append(duration, workout_type, performance, fatigue_induced, workout_note)
+    for row in cursor.fetchall():
+        workout_id, duration, workout_type, performance, fatigue_induced, workout_note = row
+        overall_workout_data.append((workout_id, duration, workout_type, performance, fatigue_induced, workout_note))
 
     conn.close()
     return {
@@ -105,3 +107,69 @@ def get_curr_workout_data():
         'muscle_groups': muscle_groups,
         'overall_workout_data': overall_workout_data
     }
+
+def save_curr_workout_data(workout_date, exercises, muscle_groups, overall_workout_data):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        INSERT INTO current_workout_date
+        VALUES (?)
+    ''', (workout_date,))
+
+    for exercise in exercises:
+        cursor.execute('''
+            INSERT INTO current_workout_exercises
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', exercise)
+    
+    for muscle_group in muscle_groups:
+        cursor.execute('''
+            INSERT INTO current_workout_muscle_groups
+            VALUES (?, ?, ?, ?, ?)
+        ''', muscle_group)
+    
+    for overall_data in overall_workout_data:
+        cursor.execute('''
+            INSERT INTO current_workout_overall
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', overall_data)
+    
+    conn.commit()
+    conn.close()
+
+def delete_curr_workout_exercise(exercise_name):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        DELETE FROM current_workout_exercises
+        WHERE exercise_name = ?
+    ''', (exercise_name,))
+
+    conn.commit()
+    conn.close()
+
+def delete_curr_muscle_group(muscle_group):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        DELETE FROM current_workout_muscle_groups
+        WHERE muscle_group = ?
+    ''', (muscle_group,))
+
+    conn.commit()
+    conn.close()
+
+def delete_curr_overall_workout(workout_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        DELETE FROM current_workout_overall
+        WHERE workout_id = ?
+    ''', (workout_id,))
+
+    conn.commit()
+    conn.close()

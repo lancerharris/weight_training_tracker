@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises
+from log_workouts import check_current_workout_exists, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data
 
 app = Flask(__name__)
 
@@ -35,6 +35,7 @@ def delete_scheduled_exercise():
 def log_workout():
     curr_workout_exists = check_current_workout_exists()
     if not curr_workout_exists:
+        print('hello world, no current workout exists')
         workout_date = date.today().strftime("%Y-%m-%d")
         weekday = date.today().strftime("%A")
         weekday_exercises = get_weekday_exercises(weekday)
@@ -45,15 +46,20 @@ def log_workout():
         
         exercises = [(exercise['exercise_name'], None, None, exercise['target_sets'], None, exercise['target_reps'], 3, '') for exercise in weekday_exercises]
         muscle_groups = [(muscle_group, 3, 1, 5, '') for muscle_group in muscle_group_names]
-        overall_workout_data = [(None, "Push", 4, 3, '')]
+        overall_workout_data = [(None, "Push", 4, 3, '', None)]
 
-    else:
-        print('hello world')
-        curr_workout_dict = get_curr_workout_data()
-        workout_date = curr_workout_dict['workout_date']
-        exercises = curr_workout_dict['exercises']
-        muscle_groups = curr_workout_dict['muscle_groups']
-        overall_workout_data = curr_workout_dict['overall_workout_data']
+        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
+        save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
+
+    curr_workout_dict = get_curr_workout_data()
+    workout_date = curr_workout_dict['workout_date']
+    exercises = curr_workout_dict['exercises']
+    # TODO look to see if there are target sets and reps on the weekly schedule and pull in if so
+    muscle_groups = curr_workout_dict['muscle_groups']
+    if not curr_workout_dict['overall_workout_data']:
+        overall_workout_data = [(None, "Push", 4, 3, '', None)]
+        # TODO: save overall workout data need to get exercise data situated correctly first
+    overall_workout_data = curr_workout_dict['overall_workout_data']
 
     return render_template(
         'log_workout.html',
@@ -65,8 +71,21 @@ def log_workout():
 
 @app.route('/delete_log_exercise', methods=['POST'])
 def delete_log_exercise():
-    exercise_id = request.form.get('exercise_id')
-    # delete exercise from current_workout_exercises table
+    exercise_name = request.form.get('exercise_name')
+    print(f"exercise_name: {exercise_name}")
+    delete_curr_workout_exercise(exercise_name)
+    return redirect(url_for('log_workout'))
+
+@app.route('/delete_log_muscle_group', methods=['POST'])
+def delete_log_muscle_group():
+    muscle_group = request.form.get('muscle_group')
+    delete_curr_muscle_group(muscle_group)
+    return redirect(url_for('log_workout'))
+
+@app.route('/delete_log_overall_workout', methods=['POST'])
+def delete_log_overall_workout():
+    workout_id = request.form.get('workout_id')
+    delete_curr_overall_workout(workout_id)
     return redirect(url_for('log_workout'))
 
 @app.route('/exercise-library')

@@ -176,7 +176,7 @@ h1 {
 
 .log-container-muscle,
 .log-container-overall {
-    grid-template-columns: repeat(5, 1fr); /* Creates 6 equal columns */
+    grid-template-columns: repeat(6, 1fr); /* Creates 6 equal columns */
 }
 
 .log-container h4 {
