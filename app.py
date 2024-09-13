@@ -40,6 +40,7 @@ def log_workout():
         print('hello world, no current workout exists')
         workout_date = date.today().strftime("%Y-%m-%d")
         weekday = date.today().strftime("%A")
+        weekday_exercises = get_weekday_exercises(weekday)
         exercise_ids = [exercise['exercise_id'] for exercise in weekday_exercises]
         primary_muscle_groups = [exercise['primary_muscle_group'] for exercise in weekday_exercises]
         secondary_muscle_groups = get_secondary_muscle_groups(exercise_ids)
