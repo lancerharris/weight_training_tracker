@@ -173,3 +173,15 @@ def delete_curr_overall_workout(workout_id):
 
     conn.commit()
     conn.close()
+
+def clear_curr_workout():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM current_workout_date')
+    cursor.execute('DELETE FROM current_workout_exercises')
+    cursor.execute('DELETE FROM current_workout_muscle_groups')
+    cursor.execute('DELETE FROM current_workout_overall')
+
+    conn.commit()
+    conn.close()

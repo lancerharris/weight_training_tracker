@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data
+from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data
 
 app = Flask(__name__)
 
@@ -87,6 +87,13 @@ def delete_log_overall_workout():
     workout_id = request.form.get('workout_id')
     delete_curr_overall_workout(workout_id)
     return redirect(url_for('log_workout'))
+
+@app.route('/clear_current_workout', methods=['POST'])
+def clear_current_workout():
+    clear_curr_workout()
+    return redirect(url_for('log_workout'))
+
+
 
 @app.route('/exercise-library')
 def exercise_library():

@@ -124,4 +124,9 @@
     {% endfor %}
 </div>
 <br>
+<div class="footer-buttons">
+    <form method="POST">
+        <button type="submit" formaction="{{ url_for('clear_current_workout') }}">Clear Workout</button>
+    </form>
+</div>
 {% endblock %}
