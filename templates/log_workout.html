@@ -10,6 +10,9 @@
 <br>
 <h2>Exercises</h2>
 <br>
+{% if exercises|length == 0 %}
+    <p>Press "Add Exercise" to log an exercise</p>
+{% else %}
 <div class="log-container-exercises">
     <h4>Exercise</h4>
     <h4>Weight</h4>
@@ -45,46 +48,51 @@
     </div>
     {% endfor %}
 </div>
+{% endif %}
 <br>
 <h2>Muscle Groups</h2>
+{% if muscle_groups|length == 0 %}
+    <p>Press "Add Muscle Group" to log a muscle group</p>
+{% else %}
 <div class="log-container-muscle">
-    <h4>Muscle Group</h4>
-    <h4>Pump Level</h4>
-    <h4>Pre-Workout Soreness</h4>
-    <h4>Pre-Workout Recovery</h4>
-    <h4>Notes</h4>
-    <h4></h4>
-    {% for muscle_group in muscle_groups %}
-    <p>{{muscle_group[0]}}</p>
-    <select id="pump-level" name="pump_level">
-        <option value="none" {% if muscle_group[1]==1 %}selected{% endif %}>None</option>
-        <option value="low" {% if muscle_group[1]==2 %}selected{% endif %}>Low</option>
-        <option value="ok" {% if muscle_group[1]==3 %}selected{% endif %}>Ok</option>
-        <option value="good" {% if muscle_group[1]==4 %}selected{% endif %}>Good</option>
-        <option value="great" {% if muscle_group[1]==5 %}selected{% endif %}>Great</option>
-    </select>
-    <select id="pre-workout-soreness" name="pre_workout_soreness">
-        <option value="none" {% if muscle_group[2]==1 %}selected{% endif %}>None</option>
-        <option value="mild" {% if muscle_group[2]==2 %}selected{% endif %}>Mild</option>
-        <option value="moderate" {% if muscle_group[2]==3 %}selected{% endif %}>Moderate</option>
-        <option value="strong" {% if muscle_group[2]==4 %}selected{% endif %}>Strong</option>
-        <option value="severe" {% if muscle_group[2]==5 %}selected{% endif %}>Severe</option>
-    </select>
-    <select id="pre-workout-recovery" name="pre_workout_recovery">
-        <option value="very-poor" {% if muscle_group[3]==1 %}selected{% endif %}>Very Poor</option>
-        <option value="poor" {% if muscle_group[3]==2 %}selected{% endif %}>Poor</option>
-        <option value="ok" {% if muscle_group[3]==3 %}selected{% endif %}>Ok</option>
-        <option value="good" {% if muscle_group[3]==4 %}selected{% endif %}>Good</option>
-        <option value="great" {% if muscle_group[3]==5 %}selected{% endif %}>Perfect</option>
-        <option value="overly-recovered" {% if muscle_group[3]==6 %}selected{% endif %}>Overly Recovered</option>
-    </select>
-    <textarea name="muscle_notes" style="width: 200px;">{{muscle_group[4]}}</textarea>
-    <form method="POST" action="{{ url_for('delete_log_muscle_group') }}" style="display: inline;">
-        <input type="hidden" name="muscle_group" value="{{muscle_group[0]}}">
-        <button type="submit">Delete</button>
-    </form>
-    {% endfor %}
-</div>
+        <h4>Muscle Group</h4>
+        <h4>Pump Level</h4>
+        <h4>Pre-Workout Soreness</h4>
+        <h4>Pre-Workout Recovery</h4>
+        <h4>Notes</h4>
+        <h4></h4>
+        {% for muscle_group in muscle_groups %}
+        <p>{{muscle_group[0]}}</p>
+        <select id="pump-level" name="pump_level">
+            <option value="none" {% if muscle_group[1]==1 %}selected{% endif %}>None</option>
+            <option value="low" {% if muscle_group[1]==2 %}selected{% endif %}>Low</option>
+            <option value="ok" {% if muscle_group[1]==3 %}selected{% endif %}>Ok</option>
+            <option value="good" {% if muscle_group[1]==4 %}selected{% endif %}>Good</option>
+            <option value="great" {% if muscle_group[1]==5 %}selected{% endif %}>Great</option>
+        </select>
+        <select id="pre-workout-soreness" name="pre_workout_soreness">
+            <option value="none" {% if muscle_group[2]==1 %}selected{% endif %}>None</option>
+            <option value="mild" {% if muscle_group[2]==2 %}selected{% endif %}>Mild</option>
+            <option value="moderate" {% if muscle_group[2]==3 %}selected{% endif %}>Moderate</option>
+            <option value="strong" {% if muscle_group[2]==4 %}selected{% endif %}>Strong</option>
+            <option value="severe" {% if muscle_group[2]==5 %}selected{% endif %}>Severe</option>
+        </select>
+        <select id="pre-workout-recovery" name="pre_workout_recovery">
+            <option value="very-poor" {% if muscle_group[3]==1 %}selected{% endif %}>Very Poor</option>
+            <option value="poor" {% if muscle_group[3]==2 %}selected{% endif %}>Poor</option>
+            <option value="ok" {% if muscle_group[3]==3 %}selected{% endif %}>Ok</option>
+            <option value="good" {% if muscle_group[3]==4 %}selected{% endif %}>Good</option>
+            <option value="great" {% if muscle_group[3]==5 %}selected{% endif %}>Perfect</option>
+            <option value="overly-recovered" {% if muscle_group[3]==6 %}selected{% endif %}>Overly Recovered</option>
+        </select>
+        <textarea name="muscle_notes" style="width: 200px;">{{muscle_group[4]}}</textarea>
+        <form method="POST" action="{{ url_for('delete_log_muscle_group') }}" style="display: inline;">
+            <input type="hidden" name="muscle_group" value="{{muscle_group[0]}}">
+            <button type="submit">Delete</button>
+        </form>
+        {% endfor %}
+    </div>
+{% endif %}
 <br>
 <h2>Overall Workout</h2>
 <div class="log-container-overall">
@@ -119,7 +127,7 @@
     <textarea name="workout_notes" style="width: 200px;">{{workout[5]}}</textarea>
     <form method="POST" action="{{ url_for('delete_log_overall_workout') }}" style="display: inline;">
         <input type="hidden" name="workout_id" value="{{workout[0]}}">
-        <button type="submit" {% if no_overall_workout_data %}style="display: none;"{% endif %}>Delete</button>
+        <button type="submit" {% if no_overall_workout_data %}style="display: none;" {% endif %}>Delete</button>
     </form>
     {% endfor %}
 </div>
