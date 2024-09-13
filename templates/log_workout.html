@@ -119,7 +119,7 @@
     <textarea name="workout_notes" style="width: 200px;">{{workout[5]}}</textarea>
     <form method="POST" action="{{ url_for('delete_log_overall_workout') }}" style="display: inline;">
         <input type="hidden" name="workout_id" value="{{workout[0]}}">
-        <button type="submit">Delete</button>
+        <button type="submit" {% if no_overall_workout_data %}style="display: none;"{% endif %}>Delete</button>
     </form>
     {% endfor %}
 </div>

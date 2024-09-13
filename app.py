@@ -33,7 +33,9 @@ def delete_scheduled_exercise():
 
 @app.route('/log-workout')
 def log_workout():
+    no_overall_workout_data = False
     curr_workout_exists = check_current_workout_exists()
+
     if not curr_workout_exists:
         print('hello world, no current workout exists')
         workout_date = date.today().strftime("%Y-%m-%d")
@@ -56,17 +58,19 @@ def log_workout():
     exercises = curr_workout_dict['exercises']
     # TODO look to see if there are target sets and reps on the weekly schedule and pull in if so
     muscle_groups = curr_workout_dict['muscle_groups']
-    if not curr_workout_dict['overall_workout_data']:
+    overall_workout_data = curr_workout_dict['overall_workout_data']
+    if len(overall_workout_data) == 0:
+        no_overall_workout_data = True
         overall_workout_data = [(None, "Push", 4, 3, '', None)]
         # TODO: save overall workout data need to get exercise data situated correctly first
-    overall_workout_data = curr_workout_dict['overall_workout_data']
 
     return render_template(
         'log_workout.html',
         workout_date=workout_date,
         exercises=exercises,
         muscle_groups=muscle_groups,
-        overall=overall_workout_data
+        overall=overall_workout_data,
+        no_overall_workout_data=no_overall_workout_data
     )
 
 @app.route('/delete_log_exercise', methods=['POST'])
