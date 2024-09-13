@@ -40,7 +40,6 @@ def log_workout():
         print('hello world, no current workout exists')
         workout_date = date.today().strftime("%Y-%m-%d")
         weekday = date.today().strftime("%A")
-        weekday_exercises = get_weekday_exercises(weekday)
         exercise_ids = [exercise['exercise_id'] for exercise in weekday_exercises]
         primary_muscle_groups = [exercise['primary_muscle_group'] for exercise in weekday_exercises]
         secondary_muscle_groups = get_secondary_muscle_groups(exercise_ids)
@@ -54,9 +53,15 @@ def log_workout():
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
 
     curr_workout_dict = get_curr_workout_data()
-    workout_date = curr_workout_dict['workout_date']
+    workout_date = date.fromisoformat(curr_workout_dict['workout_date'])
+    weekday = workout_date.strftime("%A")
+    weekday_exercises = get_weekday_exercises(weekday)
     exercises = curr_workout_dict['exercises']
-    # TODO look to see if there are target sets and reps on the weekly schedule and pull in if so
+    for i, exercise in enumerate(exercises):
+        for weekday_exercise in weekday_exercises:
+            if exercise[0] == weekday_exercise['exercise_name']:
+                exercises[i] = (exercise[0], exercise[1], exercise[2], weekday_exercise['target_sets'], exercise[4], weekday_exercise['target_reps'], exercise[6], exercise[7])
+
     muscle_groups = curr_workout_dict['muscle_groups']
     overall_workout_data = curr_workout_dict['overall_workout_data']
     if len(overall_workout_data) == 0:
