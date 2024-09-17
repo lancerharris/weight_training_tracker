@@ -48,7 +48,7 @@ def log_workout():
         
         exercises = [(exercise['exercise_name'], None, None, exercise['target_sets'], None, exercise['target_reps'], 3, '') for exercise in weekday_exercises]
         muscle_groups = [(muscle_group, 3, 1, 5, '') for muscle_group in muscle_group_names]
-        overall_workout_data = [(None, "Push", 4, 3, '', None)]
+        overall_workout_data = [(None, "Push", 4, 3, '', '')]
 
         exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
@@ -67,8 +67,10 @@ def log_workout():
     overall_workout_data = curr_workout_dict['overall_workout_data']
     if len(overall_workout_data) == 0:
         no_overall_workout_data = True
-        overall_workout_data = [(None, "Push", 4, 3, '', None)]
-        # TODO: save overall workout data need to get exercise data situated correctly first
+        overall_workout_data = [(None, "Push", 4, 3, '', '')]
+        clear_curr_workout()
+        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
+        save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
 
     return render_template(
         'log_workout.html',
