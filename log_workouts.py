@@ -132,7 +132,7 @@ def save_curr_workout_data(workout_date, exercises, muscle_groups, overall_worko
     for overall_data in overall_workout_data:
         cursor.execute('''
             INSERT INTO current_workout_overall
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (NULL, ?, ?, ?, ?, ?)
         ''', overall_data)
     
     conn.commit()
@@ -182,6 +182,19 @@ def update_curr_workout_date(workout_date):
         UPDATE current_workout_date
         SET date = ?
     ''', (workout_date,))
+
+    conn.commit()
+    conn.close()
+
+def update_curr_workout_exercise(exercise_name, weight, sets, reps, difficulty, note):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        UPDATE current_workout_exercises
+        SET weight = ?, sets = ?, reps = ?, difficulty = ?, note = ?
+        WHERE exercise_name = ?
+    ''', (weight, sets, reps, difficulty, note, exercise_name))
 
     conn.commit()
     conn.close()

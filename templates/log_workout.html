@@ -24,13 +24,13 @@
     {% for exercise in exercises %}
     <div class="exercise-info">
         <p>{{ exercise[0] }}</p>
-        <input type="number" name="weight_used" min="1" value="{{ exercise[1] }}" style="width: 75px;">
+        <input type="number" name="weight_used" min="1" value="{{ exercise[1] or '' }}" style="width: 75px;">
         <div class="exercise-set-info">
-            <input type="number" name="sets_completed" min="1" value="{{ exercise[2] }}" style="width: 75px;">
+            <input type="number" name="sets_completed" min="1" value="{{ exercise[2] or '' }}" style="width: 75px;">
             {% if exercise[3] != None %}<p> / {{ exercise[3] }}</p>{% endif %}
         </div>
         <div class="exercise-rep-info">
-            <input type="number" name="reps_completed" min="1" value="{{ exercise[4] }}" style="width: 75px;">
+            <input type="number" name="reps_completed" min="1" value="{{ exercise[4] or '' }}" style="width: 75px;">
             {% if exercise[5] != None %}<p> / {{ exercise[5] }}</p>{% endif %}
         </div>
         <select id="difficulty" name="difficulty">
@@ -51,6 +51,7 @@
 {% endif %}
 <br>
 <h2>Muscle Groups</h2>
+<br>
 {% if muscle_groups|length == 0 %}
 <p>Press "Add Muscle Group" to log a muscle group</p>
 {% else %}
@@ -95,6 +96,7 @@
 {% endif %}
 <br>
 <h2>Overall Workout</h2>
+<br>
 <div class="log-container-overall">
     <h4>Duration in Minutes</h4>
     <h4>Workout Type</h4>
@@ -103,7 +105,7 @@
     <h4>Notes</h4>
     <h4></h4>
     {% for workout in overall %}
-    <input type="number" name="workout_duration" min="1" value="{{ workout[1] }}" style="width: 75px;">
+    <input type="number" name="workout_duration" min="1" value="{{ workout[1] or '' }}" style="width: 75px;">
     <select id="workout-type" name="workout_type">
         <option value="push" {% if workout[2]=="push" %}selected{% endif %}>Push</option>
         <option value="pull" {% if workout[2]=="pull" %}selected{% endif %}>Pull</option>

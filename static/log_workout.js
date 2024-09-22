@@ -50,10 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const weightInput = container.querySelector('input[name="weight_used"]');
         const setsInput = container.querySelector('input[name="sets_completed"]');
         const repsInput = container.querySelector('input[name="reps_completed"]');
-        const difficultySelect = container.querySelector('input[name="difficulty"]');
+        const difficultySelect = container.querySelector('select[name="difficulty"]');
         const notesTextarea = container.querySelector('textarea[name="exercise_notes"]');
         
-        exercise_info = {
+        let exercise_info = {
             exercise_name: exerciseName,
             weight_used: weightInput ? weightInput.value : null,
             sets_completed: setsInput ? setsInput.value : null,
@@ -85,14 +85,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (difficultySelect) {
             difficultySelect.addEventListener('change', debounce(function() {
-                exercise_info.difficulty = this.value;
+                const difficultyMapping = {
+                    'very-easy': 1,
+                    'easy': 2,
+                    'medium': 3,
+                    'hard': 4,
+                    'very-hard': 5
+                };
+                exercise_info.difficulty = difficultyMapping[this.value.trim()];
                 sendUpdate('/update_curr_workout_exercise', exercise_info);
             }, 500));
         }
         
         if (notesTextarea) {
             notesTextarea.addEventListener('change', debounce(function() {
-                exercise_info.exercise_notes = this.value;
+                exercise_info.exercise_notes = this.value.trim();
                 sendUpdate('/update_curr_workout_exercise', exercise_info);
             }, 500));
         }
@@ -137,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (notesTextarea) {
             notesTextarea.addEventListener('change', debounce(function() {
-                muscle_info.muscle_group_notes = this.value;
+                muscle_info.muscle_group_notes = this.value.trim();
                 sendUpdate('/update_curr_workout_muscle_group', muscle_info);
             }, 500));
         }

@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date
+from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise
 
 app = Flask(__name__)
 
@@ -37,7 +37,6 @@ def log_workout():
     curr_workout_exists = check_current_workout_exists()
 
     if not curr_workout_exists:
-        print('hello world, no current workout exists')
         workout_date = date.today().strftime("%Y-%m-%d")
         weekday = date.today().strftime("%A")
         weekday_exercises = get_weekday_exercises(weekday)
@@ -48,7 +47,7 @@ def log_workout():
         
         exercises = [(exercise['exercise_name'], None, None, exercise['target_sets'], None, exercise['target_reps'], 3, '') for exercise in weekday_exercises]
         muscle_groups = [(muscle_group, 3, 1, 5, '') for muscle_group in muscle_group_names]
-        overall_workout_data = [(None, "Push", 4, 3, '', '')]
+        overall_workout_data = [(None, "Push", 4, 3, '')]
 
         exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
@@ -67,7 +66,7 @@ def log_workout():
     overall_workout_data = curr_workout_dict['overall_workout_data']
     if len(overall_workout_data) == 0:
         no_overall_workout_data = True
-        overall_workout_data = [(None, "Push", 4, 3, '', '')]
+        overall_workout_data = [(0, "Push", 4, 3, '')]
         clear_curr_workout()
         exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
@@ -86,6 +85,18 @@ def update_log_workout_date():
     workout_date = request.json.get('workout_date')
     update_curr_workout_date(workout_date)
     return jsonify({"message": "Workout date updated successfully"}), 200
+
+@app.route('/update_curr_workout_exercise', methods=['POST'])
+def update_log_exercise():
+    exercise_name = request.json.get('exercise_name')
+    weight = request.json.get('weight_used')
+    sets = request.json.get('sets_completed')
+    reps = request.json.get('reps_completed')
+    difficulty = request.json.get('difficulty')
+    print(difficulty)
+    note = request.json.get('exercise_notes')
+    update_curr_workout_exercise(exercise_name, weight, sets, reps, difficulty, note)
+    return jsonify({"message": "Exercise updated successfully"}), 200
 
 @app.route('/delete_log_exercise', methods=['POST'])
 def delete_log_exercise():
