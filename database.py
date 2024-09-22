@@ -155,7 +155,7 @@ def get_exercises_and_muscle_groups():
             ON t1.primary_muscle_group_id = t2.id
         ORDER BY t1.name
     ''')
-    exercises = [{'id': row[0], 'name': row[1], 'primary_muscle_group': row[1]} for row in cursor.fetchall()]
+    exercises = [{'id': row[0], 'name': row[1], 'primary_muscle_group': row[2]} for row in cursor.fetchall()]
 
     conn.close()
 
