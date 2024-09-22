@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise
+from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group
 
 app = Flask(__name__)
 
@@ -35,6 +35,7 @@ def delete_scheduled_exercise():
 def log_workout():
     no_overall_workout_data = False
     curr_workout_exists = check_current_workout_exists()
+    print(f"curr_workout_exists: {curr_workout_exists}")
 
     if not curr_workout_exists:
         workout_date = date.today().strftime("%Y-%m-%d")
@@ -97,6 +98,16 @@ def update_log_exercise():
     note = request.json.get('exercise_notes')
     update_curr_workout_exercise(exercise_name, weight, sets, reps, difficulty, note)
     return jsonify({"message": "Exercise updated successfully"}), 200
+
+@app.route('/update_curr_workout_muscle_group', methods=['POST'])
+def update_log_muscle_group():
+    muscle_group = request.json.get('muscle_group_name')
+    pump = request.json.get('pump_level')
+    soreness_before_workout = request.json.get('pre_workout_soreness')
+    recovery_before_workout = request.json.get('pre_workout_recovery')
+    note = request.json.get('muscle_group_notes')
+    update_curr_workout_muscle_group(muscle_group, pump, soreness_before_workout, recovery_before_workout, note)
+    return jsonify({"message": "Muscle group updated successfully"}), 200
 
 @app.route('/delete_log_exercise', methods=['POST'])
 def delete_log_exercise():

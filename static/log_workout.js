@@ -44,6 +44,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+    difficultyMapping = {
+        'very-easy': 1,
+        'easy': 2,
+        'medium': 3,
+        'hard': 4,
+        'very-hard': 5
+    };
+
     const exerciseContainers = document.querySelectorAll('.exercise-info');
     exerciseContainers.forEach(container => {
         const exerciseName = container.querySelector('p').innerText.trim();
@@ -58,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             weight_used: weightInput ? weightInput.value : null,
             sets_completed: setsInput ? setsInput.value : null,
             reps_completed: repsInput ? repsInput.value : null,
-            difficulty: difficultySelect ? difficultySelect.value : null,
+            difficulty: difficultySelect ? difficultyMapping[difficultySelect.value] : null,
             exercise_notes: notesTextarea ? notesTextarea.value : null
         }
 
@@ -85,14 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (difficultySelect) {
             difficultySelect.addEventListener('change', debounce(function() {
-                const difficultyMapping = {
-                    'very-easy': 1,
-                    'easy': 2,
-                    'medium': 3,
-                    'hard': 4,
-                    'very-hard': 5
-                };
-                exercise_info.difficulty = difficultyMapping[this.value.trim()];
+                exercise_info.difficulty = difficultyMapping[this.value];
                 sendUpdate('/update_curr_workout_exercise', exercise_info);
             }, 500));
         }
@@ -105,7 +106,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
-    const muscleGroupContainers = document.querySelectorAll('.log-container-muscle');
+
+    const pumpMapping = {
+        'none': 1,
+        'low': 2,
+        'ok': 3,
+        'good': 4,
+        'great': 5
+    };
+
+    const sorenessMapping = {
+        'none': 1,
+        'mild': 2,
+        'moderate': 3,
+        'strong': 4,
+        'severe': 5
+    };
+
+    const recoveryMapping = {
+        'very-poor': 1,
+        'poor': 2,
+        'ok': 3,
+        'good': 4,
+        'perfect': 5,
+        'overly-recovered': 6
+    };
+
+    const muscleGroupContainers = document.querySelectorAll('.muscle-group-info');
     muscleGroupContainers.forEach(container => {
         const muscleGroupName = container.querySelector('p').innerText.trim();
         const pumpLevelSelect = container.querySelector('select[name="pump_level"]');
@@ -113,31 +140,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const recoveryLevelSelect = container.querySelector('select[name="pre_workout_recovery"]');
         const notesTextarea = container.querySelector('textarea[name="muscle_group_notes"]');
 
-        muscle_info = {
+        let muscle_info = {
             muscle_group_name: muscleGroupName,
-            pump_level: pumpLevelSelect ? pumpLevelSelect.value : null,
-            pre_workout_soreness: sorenessLevelSelect ? sorenessLevelSelect.value : null,
-            pre_workout_recovery: recoveryLevelSelect ? recoveryLevelSelect.value : null,
+            pump_level: pumpLevelSelect ? pumpMapping[pumpLevelSelect.value] : null,
+            pre_workout_soreness: sorenessLevelSelect ? sorenessMapping[sorenessLevelSelect.value] : null,
+            pre_workout_recovery: recoveryLevelSelect ? recoveryMapping[recoveryLevelSelect.value] : null,
             muscle_group_notes: notesTextarea ? notesTextarea.value : null
         }
 
         if (pumpLevelSelect) {
             pumpLevelSelect.addEventListener('change', debounce(function() {
-                muscle_info.pump_level = this.value;
+                muscle_info.pump_level = pumpMapping[this.value];
                 sendUpdate('/update_curr_workout_muscle_group', muscle_info);
             }, 500));
         }
         
         if (sorenessLevelSelect) {
             sorenessLevelSelect.addEventListener('change', debounce(function() {
-                muscle_info.pre_workout_soreness = this.value;
+                muscle_info.pre_workout_soreness = sorenessMapping[this.value];
                 sendUpdate('/update_curr_workout_muscle_group', muscle_info);
             }, 500));
         }
         
         if (recoveryLevelSelect) {
             recoveryLevelSelect.addEventListener('change', debounce(function() {
-                muscle_info.pre_workout_recovery = this.value;
+                muscle_info.pre_workout_recovery = recoveryMapping[this.value];
                 sendUpdate('/update_curr_workout_muscle_group', muscle_info);
             }, 500));
         }
@@ -150,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
-    const overallWorkoutContainers = document.querySelectorAll('.log-container-overall');
+    const overallWorkoutContainers = document.querySelectorAll('.overall-workout-info');
     overallWorkoutContainers.forEach(container => {
         const workoutId = container.querySelector('input[name="workout_id"]')?.value;
         const durationInput = container.querySelector('input[name="workout_duration"]');
@@ -198,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (notesTextarea) {
             notesTextarea.addEventListener('change', debounce(function() {
-                workout_info.workout_notes = this.value;
+                workout_info.workout_notes = this.value.trim();
                 sendUpdate('/update_curr_workout_overall', workout_info);
             }, 500));
         }

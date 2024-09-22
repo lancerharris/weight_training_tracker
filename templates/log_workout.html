@@ -63,6 +63,7 @@
     <h4>Notes</h4>
     <h4></h4>
     {% for muscle_group in muscle_groups %}
+    <div class="muscle-group-info">
     <p>{{ muscle_group[0] }}</p>
     <select id="pump-level" name="pump_level">
         <option value="none" {% if muscle_group[1]==1 %}selected{% endif %}>None</option>
@@ -83,14 +84,15 @@
         <option value="poor" {% if muscle_group[3]==2 %}selected{% endif %}>Poor</option>
         <option value="ok" {% if muscle_group[3]==3 %}selected{% endif %}>Ok</option>
         <option value="good" {% if muscle_group[3]==4 %}selected{% endif %}>Good</option>
-        <option value="great" {% if muscle_group[3]==5 %}selected{% endif %}>Perfect</option>
+        <option value="perfect" {% if muscle_group[3]==5 %}selected{% endif %}>Perfect</option>
         <option value="overly-recovered" {% if muscle_group[3]==6 %}selected{% endif %}>Overly Recovered</option>
     </select>
-    <textarea name="muscle_notes" style="width: 200px;">{{ muscle_group[4] }}</textarea>
+    <textarea name="muscle_group_notes" style="width: 200px;">{{ muscle_group[4] }}</textarea>
     <form method="POST" action="{{ url_for('delete_log_muscle_group') }}" style="display: inline;">
         <input type="hidden" name="muscle_group" value="{{ muscle_group[0] }}">
         <button type="submit">Delete</button>
     </form>
+    </div>
     {% endfor %}
 </div>
 {% endif %}
@@ -105,6 +107,7 @@
     <h4>Notes</h4>
     <h4></h4>
     {% for workout in overall %}
+    <div class="overall-workout-info">
     <input type="number" name="workout_duration" min="1" value="{{ workout[1] or '' }}" style="width: 75px;">
     <select id="workout-type" name="workout_type">
         <option value="push" {% if workout[2]=="push" %}selected{% endif %}>Push</option>
@@ -131,6 +134,7 @@
         <input type="hidden" name="workout_id" value="{{ workout[0] }}">
         <button type="submit" {% if no_overall_workout_data %}style="display: none;" {% endif %}>Delete</button>
     </form>
+    </div>
     {% endfor %}
 </div>
 <br>

@@ -184,7 +184,9 @@ h1 {
     margin: 0;
 }
 
-.exercise-info {
+.exercise-info,
+.muscle-group-info,
+.overall-workout-info {
     display: contents; /* Allows direct placement of child elements into the grid */
 }
 
