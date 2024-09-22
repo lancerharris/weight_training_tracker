@@ -85,8 +85,8 @@ def get_curr_workout_data():
     exercises = []
     cursor.execute('SELECT * FROM current_workout_exercises')
     for row in cursor.fetchall():
-        exercise_name, weight, sets, reps, difficulty, exercise_note = row
-        exercises.append((exercise_name, weight, sets, None, reps, None, difficulty, exercise_note))
+        exercise_name, weight, sets, target_sets, reps, target_reps, difficulty, exercise_note = row
+        exercises.append((exercise_name, weight, sets, target_sets, reps, target_reps, difficulty, exercise_note))
     
     muscle_groups = []
     cursor.execute('SELECT * FROM current_workout_muscle_groups')
@@ -254,7 +254,7 @@ def add_exercise_to_log(exercise_id, weight, sets, reps):
     exercise_name = result[0] if result else None
 
     cursor.execute('''
-        INSERT INTO current_workout_exercises (exercise_name, weight, sets, reps, difficulty)
+        INSERT INTO current_workout_exercises (exercise_name, weight, target_sets, target_reps, difficulty)
         VALUES (?, ?, ?, ?, 3)
     ''', (exercise_name, weight, sets, reps))
 
@@ -281,7 +281,7 @@ def add_exercise_to_log(exercise_id, weight, sets, reps):
         ''', (primary_muscle_group_id,))
         result = cursor.fetchone()
         primary_muscle_group = result[0] if result else None
-        
+
     conn.commit()
     conn.close()
 

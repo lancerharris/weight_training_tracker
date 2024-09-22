@@ -90,7 +90,9 @@ def create_tables():
         exercise_name TEXT NOT NULL,
         weight REAL,
         sets INTEGER,
+        target_sets INTEGER,
         reps INTEGER,
+        target_reps INTEGER,
         difficulty INTEGER,
         note TEXT
     );
