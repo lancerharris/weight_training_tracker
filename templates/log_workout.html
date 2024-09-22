@@ -41,7 +41,7 @@
             <option value="hard" {% if exercise[6]==4 %}selected{% endif %}>Hard</option>
             <option value="very-hard" {% if exercise[6]==5 %}selected{% endif %}>Very Hard</option>
         </select>
-        <textarea name="exercise_notes" style="width: 200px;">{{ exercise[7] }}</textarea>
+        <textarea name="exercise_notes" style="width: 200px;">{{ exercise[7] or '' }}</textarea>
         <form method="POST" action="{{ url_for('delete_log_exercise') }}" style="display: inline;">
             <input type="hidden" name="exercise_name" value="{{ exercise[0] }}">
             <button type="submit">Delete</button>
@@ -126,7 +126,7 @@
             <option value="perfect" {% if muscle_group[3]==5 %}selected{% endif %}>Perfect</option>
             <option value="overly-recovered" {% if muscle_group[3]==6 %}selected{% endif %}>Overly Recovered</option>
         </select>
-        <textarea name="muscle_group_notes" style="width: 200px;">{{ muscle_group[4] }}</textarea>
+        <textarea name="muscle_group_notes" style="width: 200px;">{{ muscle_group[4] or '' }}</textarea>
         <form method="POST" action="{{ url_for('delete_log_muscle_group') }}" style="display: inline;">
             <input type="hidden" name="muscle_group" value="{{ muscle_group[0] }}">
             <button type="submit">Delete</button>
@@ -224,7 +224,7 @@
             <option value="strong" {% if workout[4]==4 %}selected{% endif %}>Strong</option>
             <option value="severe" {% if workout[4]==5 %}selected{% endif %}>Severe</option>
         </select>
-        <textarea name="workout_notes" style="width: 200px;">{{ workout[5] }}</textarea>
+        <textarea name="workout_notes" style="width: 200px;">{{ workout[5] or '' }}</textarea>
         <form method="POST" action="{{ url_for('delete_log_overall_workout') }}" style="display: inline;">
             <input type="hidden" name="workout_id" value="{{ workout[0] }}">
             <button type="submit" {% if no_overall_workout_data %}style="display: none;" {% endif %}>Delete</button>
