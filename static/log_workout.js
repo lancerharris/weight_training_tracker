@@ -177,6 +177,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })
 
+    const performanceMapping = {
+        'very-poor': 1,
+        'poor': 2,
+        'ok': 3,
+        'good': 4,
+        'great': 5,
+        'phenomenal': 6
+    };
+
+    const fatigueInducedMapping = {
+        'none': 1,
+        'mild': 2,
+        'moderate': 3,
+        'strong': 4,
+        'severe': 5
+    };
+
     const overallWorkoutContainers = document.querySelectorAll('.overall-workout-info');
     overallWorkoutContainers.forEach(container => {
         const workoutId = container.querySelector('input[name="workout_id"]')?.value;
@@ -190,8 +207,8 @@ document.addEventListener('DOMContentLoaded', function() {
             workout_id: workoutId,
             workout_duration: durationInput ? durationInput.value : null,
             workout_type: typeSelect ? typeSelect.value : null,
-            performance_rating: performanceSelect ? performanceSelect.value : null,
-            fatigue_induced: fatigueSelect ? fatigueSelect.value : null,
+            performance_rating: performanceSelect ? performanceMapping[performanceSelect.value] : null,
+            fatigue_induced: fatigueSelect ? fatigueInducedMapping[fatigueSelect.value] : null,
             workout_notes: notesTextarea ? notesTextarea.value : null
         }
 
@@ -211,14 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (performanceSelect) {
             performanceSelect.addEventListener('change', debounce(function() {
-                workout_info.performance_rating = this.value;
+                workout_info.performance_rating = performanceMapping[this.value];
                 sendUpdate('/update_curr_workout_overall', workout_info);
             }, 500));
         }
         
         if (fatigueSelect) {
             fatigueSelect.addEventListener('change', debounce(function() {
-                workout_info.fatigue_induced = this.value;
+                workout_info.fatigue_induced = fatigueInducedMapping[this.value];
                 sendUpdate('/update_curr_workout_overall', workout_info);
             }, 500));
         }

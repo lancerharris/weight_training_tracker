@@ -212,6 +212,19 @@ def update_curr_workout_muscle_group(muscle_group, pump, soreness_before_workout
     conn.commit()
     conn.close()
 
+def update_curr_workout_overall(workout_id, duration, type, performance, fatigue, note):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        UPDATE current_workout_overall
+        SET duration_in_minutes = ?, workout_type = ?, performance = ?, fatigue_induced = ?, note = ?
+        WHERE workout_id = ?
+    ''', (duration, type, performance, fatigue, note, workout_id))
+
+    conn.commit()
+    conn.close()
+
 def clear_curr_workout():
     conn = connect_db()
     cursor = conn.cursor()

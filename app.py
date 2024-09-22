@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group
+from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
 
 app = Flask(__name__)
 
@@ -108,6 +108,17 @@ def update_log_muscle_group():
     note = request.json.get('muscle_group_notes')
     update_curr_workout_muscle_group(muscle_group, pump, soreness_before_workout, recovery_before_workout, note)
     return jsonify({"message": "Muscle group updated successfully"}), 200
+
+@app.route('/update_curr_workout_overall', methods=['POST'])
+def update_log_overall_workout():
+    workout_id = request.json.get('workout_id')
+    duration = request.json.get('workout_duration')
+    type = request.json.get('workout_type')
+    performance = request.json.get('performance_rating')
+    fatigue = request.json.get('fatigue_induced')
+    note = request.json.get('workout_notes')
+    update_curr_workout_overall(workout_id, duration, type, performance, fatigue, note)
+    return jsonify({"message": "Overall workout updated successfully"}), 200
 
 @app.route('/delete_log_exercise', methods=['POST'])
 def delete_log_exercise():
