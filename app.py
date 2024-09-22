@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from database import create_tables, get_exercises_and_muscle_groups, load_data_from_folder
 import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data
+from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date
 
 app = Flask(__name__)
 
@@ -80,6 +80,12 @@ def log_workout():
         overall=overall_workout_data,
         no_overall_workout_data=no_overall_workout_data
     )
+
+@app.route('/update_curr_workout_date', methods=['POST'])
+def update_log_workout_date():
+    workout_date = request.json.get('workout_date')
+    update_curr_workout_date(workout_date)
+    return jsonify({"message": "Workout date updated successfully"}), 200
 
 @app.route('/delete_log_exercise', methods=['POST'])
 def delete_log_exercise():

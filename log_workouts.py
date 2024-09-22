@@ -174,6 +174,18 @@ def delete_curr_overall_workout(workout_id):
     conn.commit()
     conn.close()
 
+def update_curr_workout_date(workout_date):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        UPDATE current_workout_date
+        SET date = ?
+    ''', (workout_date,))
+
+    conn.commit()
+    conn.close()
+
 def clear_curr_workout():
     conn = connect_db()
     cursor = conn.cursor()
