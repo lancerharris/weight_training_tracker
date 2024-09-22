@@ -56,7 +56,6 @@ def get_planned_workouts():
 def add_exercise_from_library(exercise_id, day_of_week, sets, reps):
     conn = connect_db()
     cursor = conn.cursor()
-    print(f"day_of_week: {day_of_week}")
     weekday_int = weekday_ints[day_of_week]
 
     sets = int(sets) if sets != '' else 0

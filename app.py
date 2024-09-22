@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for
-from database import create_tables, get_exercises_and_muscle_groups, load_data_from_folder
+from database import create_tables, get_exercises_and_muscle_groups, get_muscle_groups, load_data_from_folder
 import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
+from log_workouts import add_exercise_to_log, add_muscle_group_to_log, check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
 
 app = Flask(__name__)
 
@@ -25,6 +25,22 @@ def add_exercises_to_schedule():
         for exercise_id in selected_exercises:
             add_exercise_from_library(exercise_id, request.form.get('day_of_week'), request.form.get('sets'), request.form.get('reps'))
     return redirect(url_for('schedule'))
+
+@app.route('/add_exercises_to_log', methods=['POST'])
+def add_exercises_to_log():
+    selected_exercises = request.form.getlist('selected_exercises')
+    if selected_exercises:
+        for exercise_id in selected_exercises:
+            add_exercise_to_log(exercise_id, request.form.get('weight'), request.form.get('sets'), request.form.get('reps'))
+    return redirect(url_for('log_workout'))
+
+@app.route('/add_muscle_group_to_log', methods=['POST'])
+def add_muscle_groups_to_log():
+    selected_muscle_groups = request.form.getlist('selected_muscle_groups')
+    if selected_muscle_groups:
+        for muscle_group in selected_muscle_groups:
+            add_muscle_group_to_log(muscle_group, request.form.get('pump_level_add'), request.form.get('pre_workout_soreness_add'), request.form.get('pre_workout_recovery_add'))
+    return redirect(url_for('log_workout'))
 
 @app.route('/delete_scheduled_exercise', methods=['POST'])
 def delete_scheduled_exercise():
@@ -72,13 +88,18 @@ def log_workout():
         exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
 
+    exercises_in_library = [exercise for exercise in get_exercises_and_muscle_groups() if exercise['name'] not in [e[0] for e in exercises]]
+    muscle_groups_in_db = [muscle_group['muscle_group'] for muscle_group in get_muscle_groups() if muscle_group['muscle_group'] not in [mg[0] for mg in muscle_groups]]
+
     return render_template(
         'log_workout.html',
         workout_date=workout_date,
         exercises=exercises,
         muscle_groups=muscle_groups,
         overall=overall_workout_data,
-        no_overall_workout_data=no_overall_workout_data
+        no_overall_workout_data=no_overall_workout_data,
+        exercises_in_library=exercises_in_library,
+        muscle_groups_in_db=muscle_groups_in_db
     )
 
 @app.route('/update_curr_workout_date', methods=['POST'])

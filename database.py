@@ -160,3 +160,18 @@ def get_exercises_and_muscle_groups():
     conn.close()
 
     return exercises
+
+def get_muscle_groups():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT id, muscle_group
+        FROM muscle_groups
+        ORDER BY muscle_group
+    ''')
+    muscle_groups = [{'id': row[0], 'muscle_group': row[1]} for row in cursor.fetchall()]
+
+    conn.close()
+
+    return muscle_groups

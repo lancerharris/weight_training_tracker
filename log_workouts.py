@@ -236,3 +236,68 @@ def clear_curr_workout():
 
     conn.commit()
     conn.close()
+
+def add_exercise_to_log(exercise_id, weight, sets, reps):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    sets = int(sets) if sets != '' else 0
+    sets = max(sets, 0)
+    reps = int(reps) if reps != '' else 0
+    reps = max(reps, 0)
+
+    cursor.execute('''
+        SELECT name FROM exercises
+        WHERE id = ?
+    ''', (exercise_id,))
+    result = cursor.fetchone()
+    exercise_name = result[0] if result else None
+
+    cursor.execute('''
+        INSERT INTO current_workout_exercises (exercise_name, weight, sets, reps, difficulty)
+        VALUES (?, ?, ?, ?, 3)
+    ''', (exercise_name, weight, sets, reps))
+
+    cursor.execute('''
+        SELECT primary_muscle_group_id FROM exercises
+        WHERE id = ?
+    ''', (exercise_id,))
+    result = cursor.fetchone()
+    primary_muscle_group_id = result[0] if result else None
+
+    if primary_muscle_group_id:
+        cursor.execute('''
+            WITH primary_muscle_group_cte AS (
+                SELECT muscle_group
+                FROM muscle_groups
+                WHERE id = ?
+            )
+            SELECT muscle_group
+            FROM primary_muscle_group_cte
+            WHERE muscle_group NOT IN (
+                SELECT muscle_group
+                FROM current_workout_muscle_groups
+            )
+        ''', (primary_muscle_group_id,))
+        result = cursor.fetchone()
+        primary_muscle_group = result[0] if result else None
+        
+    conn.commit()
+    conn.close()
+
+    if primary_muscle_group:
+        add_muscle_group_to_log(primary_muscle_group, 3, 0, 5)
+
+
+
+def add_muscle_group_to_log(muscle_group, pump, soreness_before_workout, recovery_before_workout):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        INSERT INTO current_workout_muscle_groups (muscle_group, pump, soreness_before_workout, recovery_before_workout)
+        VALUES (?, ?, ?, ?)
+    ''', (muscle_group, pump, soreness_before_workout, recovery_before_workout))
+
+    conn.commit()
+    conn.close()
