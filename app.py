@@ -28,10 +28,21 @@ def add_exercises_to_schedule():
 
 @app.route('/add_exercises_to_log', methods=['POST'])
 def add_exercises_to_log():
-    selected_exercises = request.form.getlist('selected_exercises')
-    if selected_exercises:
-        for exercise_id in selected_exercises:
-            add_exercise_to_log(exercise_id, request.form.get('weight'), request.form.get('sets'), request.form.get('reps'))
+    selected_exercises = sorted(request.form.getlist('selected_exercises'))
+    exercise_ids = request.form.getlist('exercise_id')
+    weights = request.form.getlist('weight')
+    sets = request.form.getlist('sets')
+    reps = request.form.getlist('reps')
+
+    selected_exercise_indicators = [False] * len(exercise_ids)
+
+    for i in range(len(exercise_ids)):
+        if exercise_ids[i] in selected_exercises:
+            selected_exercise_indicators[i] = True
+        if selected_exercise_indicators[i] == True or weights[i] != '' or sets[i] != '' or reps[i] != '':
+            add_exercise_to_log(exercise_ids[i], weights[i], sets[i], reps[i])
+
+    
     return redirect(url_for('log_workout'))
 
 @app.route('/add_muscle_group_to_log', methods=['POST'])
@@ -72,13 +83,8 @@ def log_workout():
     curr_workout_dict = get_curr_workout_data()
     workout_date = date.fromisoformat(curr_workout_dict['workout_date'])
     weekday = workout_date.strftime("%A")
-    weekday_exercises = get_weekday_exercises(weekday)
     exercises = curr_workout_dict['exercises']
-    for i, exercise in enumerate(exercises):
-        for weekday_exercise in weekday_exercises:
-            if exercise[0] == weekday_exercise['exercise_name']:
-                exercises[i] = (exercise[0], exercise[1], exercise[2], weekday_exercise['target_sets'], exercise[4], weekday_exercise['target_reps'], exercise[6], exercise[7])
-
+    
     muscle_groups = curr_workout_dict['muscle_groups']
     overall_workout_data = curr_workout_dict['overall_workout_data']
     if len(overall_workout_data) == 0:
