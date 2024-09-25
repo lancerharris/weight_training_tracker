@@ -72,6 +72,7 @@
                             <input type="checkbox" name="selected_exercises" value="{{ exercise.id }}">
                             {{ exercise.name }} - {{ exercise.primary_muscle_group }}
                             <div>
+                                <input type="number" name="exercise_id" value="{{ exercise.id }}" style="display: none;">
                                 <input type="number" name="weight" placeholder="Weight" min="0" style="width: 75px;">
                                 <input type="number" name="sets" placeholder="Sets" min="1" style="width: 75px;">
                                 <input type="number" name="reps" placeholder="Reps" min="1" style="width: 75px;">
