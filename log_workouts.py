@@ -120,7 +120,7 @@ def save_curr_workout_data(workout_date, exercises, muscle_groups, overall_worko
     for exercise in exercises:
         cursor.execute('''
             INSERT INTO current_workout_exercises
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', exercise)
     
     for muscle_group in muscle_groups:

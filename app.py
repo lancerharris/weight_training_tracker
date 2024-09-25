@@ -66,7 +66,7 @@ def log_workout():
         muscle_groups = [(muscle_group, 3, 1, 5, '') for muscle_group in muscle_group_names]
         overall_workout_data = [(None, "Push", 4, 3, '')]
 
-        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
+        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[3], exercise[4], exercise[5], exercise[6], exercise[7]) for exercise in exercises]
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
 
     curr_workout_dict = get_curr_workout_data()
@@ -85,7 +85,7 @@ def log_workout():
         no_overall_workout_data = True
         overall_workout_data = [(0, "Push", 4, 3, '')]
         clear_curr_workout()
-        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[4], exercise[6], exercise[7]) for exercise in exercises]
+        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[3], exercise[4], exercise[5], exercise[6], exercise[7]) for exercise in exercises]
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
 
     exercises_in_library = [exercise for exercise in get_exercises_and_muscle_groups() if exercise['name'] not in [e[0] for e in exercises]]
