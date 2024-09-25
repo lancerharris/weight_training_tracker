@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import add_exercise_to_log, add_muscle_group_to_log, check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
+from log_workouts import add_exercise_to_log, add_muscle_group_to_log, add_overall_workout_to_log, check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
 
 app = Flask(__name__)
 
@@ -90,9 +90,7 @@ def log_workout():
     if len(overall_workout_data) == 0:
         no_overall_workout_data = True
         overall_workout_data = [(0, "Push", 4, 3, '')]
-        clear_curr_workout()
-        exercise_save_data = [(exercise[0], exercise[1], exercise[2], exercise[3], exercise[4], exercise[5], exercise[6], exercise[7]) for exercise in exercises]
-        save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
+        add_overall_workout_to_log(overall_workout_data[0][0], overall_workout_data[0][1], overall_workout_data[0][2], overall_workout_data[0][3])
 
     exercises_in_library = [exercise for exercise in get_exercises_and_muscle_groups() if exercise['name'] not in [e[0] for e in exercises]]
     muscle_groups_in_db = [muscle_group['muscle_group'] for muscle_group in get_muscle_groups() if muscle_group['muscle_group'] not in [mg[0] for mg in muscle_groups]]

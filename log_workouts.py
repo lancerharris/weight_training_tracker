@@ -301,3 +301,15 @@ def add_muscle_group_to_log(muscle_group, pump, soreness_before_workout, recover
 
     conn.commit()
     conn.close()
+
+def add_overall_workout_to_log(duration, workout_type, performance, fatigue_induced):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        INSERT INTO current_workout_overall (duration_in_minutes, workout_type, performance, fatigue_induced)
+        VALUES (?, ?, ?, ?)
+    ''', (duration, workout_type, performance, fatigue_induced))
+
+    conn.commit()
+    conn.close()
