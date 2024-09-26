@@ -69,7 +69,8 @@ def check_current_workout_exists():
 
     cursor.execute('SELECT COUNT(*) FROM current_workout_overall')
     result = cursor.fetchone()
-    count = 1 if result else 0
+    print(f"result: {result}")
+    count = result[0] if result else 0
 
     conn.close()
     return count > 0

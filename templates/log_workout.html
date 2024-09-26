@@ -260,6 +260,32 @@
             </div>
         </div>
     </div>
+    
+    <!-- Clear Workout Button with Modal Trigger -->
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#scheduledWorkoutModal">Use Scheduled Workout</button>
+
+    <!-- Clear Workout Modal -->
+    <div class="modal fade" id="scheduledWorkoutModal" tabindex="-1" aria-labelledby="clearWorkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scheduledWorkoutModalLabel">Confirm Use Scheduled Workout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to get rid of the current workout and use the daily workout from the weekly schedule?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <form method="POST">
+                        <button type="submit" formaction="{{ url_for('use_scheduled_workout') }}" class="btn btn-warning">Use Scheduled Workout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="{{ url_for('static', filename='log_workout.js') }}"></script>
 {% endblock %}

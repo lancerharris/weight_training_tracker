@@ -173,7 +173,11 @@ def clear_current_workout():
     add_overall_workout_to_log(overall_workout_data[0][0], overall_workout_data[0][1], overall_workout_data[0][2], overall_workout_data[0][3])
     return redirect(url_for('log_workout'))
 
-
+@app.route('/use_scheduled_workout', methods=['POST'])
+def use_scheduled_workout():
+    delete_curr_workout()
+    print('hello    ')
+    return redirect(url_for('log_workout'))
 
 @app.route('/exercise-library')
 def exercise_library():
