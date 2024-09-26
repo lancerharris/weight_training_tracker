@@ -67,9 +67,9 @@ def check_current_workout_exists():
     conn = connect_db()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT COUNT(*) FROM current_workout_date')
+    cursor.execute('SELECT COUNT(*) FROM current_workout_overall')
     result = cursor.fetchone()
-    count = result[0] if result else 0
+    count = 1 if result else 0
 
     conn.close()
     return count > 0
@@ -225,7 +225,7 @@ def update_curr_workout_overall(workout_id, duration, type, performance, fatigue
     conn.commit()
     conn.close()
 
-def clear_curr_workout():
+def delete_curr_workout():
     conn = connect_db()
     cursor = conn.cursor()
 

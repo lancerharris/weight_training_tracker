@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 from weekly_schedule import add_exercise_from_library, delete_exercise_from_schedule, get_planned_workouts
-from log_workouts import add_exercise_to_log, add_muscle_group_to_log, add_overall_workout_to_log, check_current_workout_exists, clear_curr_workout, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
+from log_workouts import add_exercise_to_log, add_muscle_group_to_log, add_overall_workout_to_log, check_current_workout_exists, delete_curr_muscle_group, delete_curr_overall_workout, delete_curr_workout, delete_curr_workout_exercise, get_curr_workout_data, get_secondary_muscle_groups, get_weekday_exercises, save_curr_workout_data, update_curr_workout_date, update_curr_workout_exercise, update_curr_workout_muscle_group, update_curr_workout_overall
 
 app = Flask(__name__)
 
@@ -81,8 +81,10 @@ def log_workout():
         save_curr_workout_data(workout_date, exercise_save_data, muscle_groups, overall_workout_data)
 
     curr_workout_dict = get_curr_workout_data()
-    workout_date = date.fromisoformat(curr_workout_dict['workout_date'])
-    weekday = workout_date.strftime("%A")
+    if curr_workout_dict['workout_date'] is None:
+        workout_date = date.today().strftime("%Y-%m-%d")
+    else:
+        workout_date = date.fromisoformat(curr_workout_dict['workout_date'])
     exercises = curr_workout_dict['exercises']
     
     muscle_groups = curr_workout_dict['muscle_groups']
@@ -166,7 +168,9 @@ def delete_log_overall_workout():
 
 @app.route('/clear_current_workout', methods=['POST'])
 def clear_current_workout():
-    clear_curr_workout()
+    delete_curr_workout()
+    overall_workout_data = [(0, "Push", 4, 3, '')]
+    add_overall_workout_to_log(overall_workout_data[0][0], overall_workout_data[0][1], overall_workout_data[0][2], overall_workout_data[0][3])
     return redirect(url_for('log_workout'))
 
 
