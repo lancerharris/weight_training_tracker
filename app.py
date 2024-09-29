@@ -21,9 +21,21 @@ def schedule():
 @app.route('/add_exercises_to_schedule', methods=['POST'])
 def add_exercises_to_schedule():
     selected_exercises = request.form.getlist('selected_exercises')
-    if selected_exercises:
-        for exercise_id in selected_exercises:
-            add_exercise_from_library(exercise_id, request.form.get('day_of_week'), request.form.get('sets'), request.form.get('reps'))
+    exercise_ids = request.form.getlist('exercise_id')
+    sets = request.form.getlist('sets')
+    reps = request.form.getlist('reps')
+
+    day_of_week = request.form.get('day_of_week')
+    
+    selected_exercise_indicators = [False] * len(exercise_ids)
+
+    for i in range(len(exercise_ids)):
+        if exercise_ids[i] in selected_exercises:
+            selected_exercise_indicators[i] = True
+        if selected_exercise_indicators[i] == True or sets[i] != '' or reps[i] != '':
+            print(day_of_week)
+            add_exercise_from_library(exercise_ids[i], day_of_week, sets[i], reps[i])
+
     return redirect(url_for('schedule'))
 
 @app.route('/add_exercises_to_log', methods=['POST'])
